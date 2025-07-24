@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <div class="location">{{ location }}</div>
+    <div class="current-date">{{ current.formatted_date }}</div>
+  </header>
+
+  <div class="main-content">
+    <div class="current-weather">
+      <div class="weather-icon">
+        {% if current.weathercode == 0 %}☀️
+        {% elif current.weathercode in [1, 2, 3] %}⛅
+        {% elif current.weathercode in [45, 48] %}🌫️
+        {% elif current.weathercode in [51, 53, 55, 56, 57] %}🌧️
+        {% elif current.weathercode in [61, 63, 65] %}🌧️
+        {% elif current.weathercode in [66, 67] %}🌨️
+        {% elif current.weathercode in [71, 73, 75, 77] %}❄️
+        {% elif current.weathercode in [80, 81, 82] %}🌦️
+        {% elif current.weathercode in [85, 86] %}🌨️
+        {% elif current.weathercode in [95, 96, 99] %}⛈️
+        {% endif %}
+      </div>
+      <div class="temperature">{{ current.temperature_2m }}°C</div>
+    </div>
+
+    <div class="hourly-chart">
+      <h3>Voorspelling per uur</h3>
+      <canvas id="hourlyChart"></canvas>
+    </div>
+  </div>
+
+  <div class="daily-forecast">
+    {% for day in daily.time %}
+      <div class="forecast-card">
+        <strong>{{ day }}</strong>
+        <div class="weather-icon">
+          {% if daily.weathercode[loop.index0] == 0 %}☀️
+          {% elif daily.weathercode[loop.index0] in [1, 2, 3] %}⛅
+          {% elif daily.weathercode[loop.index0] in [45, 48] %}🌫️
+          {% elif daily.weathercode[loop.index0] in [51, 53, 55, 56, 57] %}🌧️
+          {% elif daily.weathercode[loop.index0] in [61, 63, 65] %}🌧️
+          {% elif daily.weathercode[loop.index0] in [66, 67] %}🌨️
+          {% elif daily.weathercode[loop.index0] in [71, 73, 75, 77] %}❄️
+          {% elif daily.weathercode[loop.index0] in [80, 81, 82] %}🌦️
+          {% elif daily.weathercode[loop.index0] in [85, 86] %}🌨️
+          {% elif daily.weathercode[loop.index0] in [95, 96, 99] %}⛈️
+          {% endif %}
+        </div>
+          <div class="temperature">
+            {{ daily.temperature_2m_max[loop.index0] }}°C / {{ daily.temperature_2m_min[loop.index0] }}°C
+          </div>
+      </div>
+    {% endfor %}
+
+  <script>
+    const hourlyData = {{ hourly | tojson | safe }};
+    const currentHourIndex = {{ current_hour_index }};
+    const endIndex = currentHourIndex + 21;
+
+    const selectedTimes = hourlyData.time.slice(currentHourIndex, endIndex);
+    const temperatures = hourlyData.temperature_2m.slice(currentHourIndex, endIndex);
+    const rainfall = hourlyData.rain.slice(currentHourIndex, endIndex);
+
+    const timeLabels = selectedTimes.map(time => {
+      const date = new Date(time);
+      return date.getHours() + ':00';
+    });
+
+    const ctx = document.getElementById('hourlyChart').getContext('2d');
+    const hourlyChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: timeLabels,
+        datasets: [
+          {
+            label: 'Temperatuur (°C)',
+            data: temperatures,
+            borderColor: '#ff6b35',
+            backgroundColor: 'rgba(255, 107, 53, 0.1)',
+            tension: 0.4,
+            yAxisID: 'y'
+          },
+          {
+            label: 'Neerslag (mm)',
+            data: rainfall,
+            borderColor: '#3498db',
+            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+            tension: 0.4,
+            yAxisID: 'y1'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        scales: {
+          x: {
+            display: true,
+            title: {
+              display: true,
+              text: 'Time'
+            },
+            ticks: {
+              callback: function(value, index, ticks){
+                return index % 4 === 0 ? this.getLabelForValue(value) : '';
+              }
+            },
+            grid: {
+              display: false,
+            }
+          },
+          y: {
+            type: 'linear',
+            display: false,
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Temperature (°C)'
+            },
+            grid: {
+              drawOnChartArea: false,
+            },
+            ticks: {
+              callback: function(value, index, ticks) {
+                const min = Math.min(...temperatures);
+                const max = Math.max(...temperatures);
+                if (value === min || value === max) {
+                  return String(value) + ' °C';
+                }
+                return '';
+              }
+            }
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            // title: {
+            //   display: true,
+            //   text: 'Rain (mm)'
+            // },
+            grid: {
+              drawOnChartArea: false,
+            },
+            ticks: {
+              display: true,
+              callback: function(value, index, ticks) {
+                const min = Math.min(...rainfall);
+                const max = Math.max(...rainfall);
+                if (value === min || value === max) {
+                  return value.toFixed(1) + ' mm';
+                }
+                return '';
+              },
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+          title: {
+            display: false
+          },
+        },
+      },
+      plugins: [{
+        id: 'temperatureLabels',
+        afterDatasetsDraw: function(chart) {
+          const ctx = chart.ctx;
+          const dataset = chart.data.datasets[0]; // Temperature dataset
+          const meta = chart.getDatasetMeta(0);
+          
+          ctx.save();
+          ctx.font = '12px Arial';
+          ctx.fillStyle = '#ff6b35';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+
+          // Loop through data points, show label every 3 hours (excluding first and last)
+          dataset.data.forEach((value, index) => {
+            // Skip first and last, show every 3 hours starting from index 3
+            if (index > 0 && index < dataset.data.length - 1 && index % 3 === 0) {
+              const point = meta.data[index];
+              const x = point.x;
+              const y = point.y - 5; // 5px above the point
+              
+              ctx.fillText(value.toFixed(1) + '°', x, y);
+            }
+          });
+          
+          ctx.restore();
+        }
+      }]
+    });
+
+  </script>
+</body>
+</html>
+

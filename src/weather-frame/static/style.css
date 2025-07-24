@@ -1,0 +1,147 @@
+body { 
+  margin: 0; 
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  padding: 40px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.location {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #1a1a1a;
+}
+
+.current-date {
+  font-size: 20px;
+  color: #666;
+}
+
+.main-content{
+  display: flex;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  align-items: flex-start;
+}
+
+.current-weather { 
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  /* max-width: 400px; */
+  width: 400px;
+  /* margin: 0 auto 40px; */
+  flex-shrink: 0;
+}
+
+.current-weather .weather-icon { 
+  font-size: 72px;
+  margin-bottom: 15px;
+}
+
+.current-weather .temperature {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.hourly-chart {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  flex: 1;
+}
+
+.hourly-chart h3 {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.hourly-chart canvas {
+  max-height: 200px;
+}
+
+.daily-forecast {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 15px;
+}
+
+.forecast-card {
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.forecast-card strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #666;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.forecast-card .weather-icon {
+  font-size: 28px;
+  margin: 10px 0;
+}
+
+.forecast-card .temperature {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+/* Add responsive behavior */
+@media (max-width: 768px) {
+  body {
+    padding: 20px;
+  }
+  
+  .location {
+    font-size: 36px;
+  }
+
+  .main-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .current-weather {
+    padding: 30px;
+  }
+  
+  .daily-forecast {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .daily-forecast {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .location {
+    font-size: 28px;
+  }
+  
+  .current-date {
+    font-size: 16px;
+  }
+}
