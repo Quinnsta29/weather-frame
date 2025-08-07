@@ -25,7 +25,7 @@ screenshot_path = os.path.join(screenshots_dir, 'screenshot.png')
 def take_screenshot_and_update_display():
     """Take a screenshot of the weather dashoard using headless Chromium."""
     try:
-        url = "http://localhost:80" # Adjust if needed
+        url = "http://localhost:8080" # Adjust if needed
         cmd = [
             'chromium-browser',
             '--headless',
@@ -169,4 +169,4 @@ atexit.register(lambda: scheduler.shutdown())
 if __name__ == "__main__":
     update_weather_data()  # Initial data fetch    
 
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
