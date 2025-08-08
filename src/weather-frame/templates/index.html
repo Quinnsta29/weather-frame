@@ -17,19 +17,7 @@
   <div class="main-content">
     <div class="current-weather">
       <div class="weather-icon">
-        <!-- TODO: Add weather icons -->
-        <!-- https://github.com/Makin-Things/weather-icons/tree/main/static -->
-        {% if current.weathercode == 0 %}☀️ <!-- Clear sky -->
-        {% elif current.weathercode in [1, 2, 3] %}⛅ <!-- Partly cloudy-->
-        {% elif current.weathercode in [45, 48] %}🌫️ <!-- Fog -->
-        {% elif current.weathercode in [51, 53, 55, 56, 57] %}🌧️ <!-- light rain  -->
-        {% elif current.weathercode in [61, 63, 65] %}🌧️ <!-- Rain -->
-        {% elif current.weathercode in [66, 67] %}🌨️ <!-- Freezing rain -->
-        {% elif current.weathercode in [71, 73, 75, 77] %}❄️ <!-- Snow -->
-        {% elif current.weathercode in [80, 81, 82] %}🌦️ <!-- Rain shower -->
-        {% elif current.weathercode in [85, 86] %}🌨️ <!-- Snow shower -->
-        {% elif current.weathercode in [95, 96, 99] %}⛈️ <!-- Thunderstorm -->
-        {% endif %}
+        <img src="{{ url_for('static', filename='icons/' + get_weather_icon(current.weathercode)) }}" alt="Current Weather">
       </div>
       <div class="temperature">{{ current.temperature_2m }}°C</div>
     </div>
@@ -45,17 +33,7 @@
       <div class="forecast-card">
         <strong>{{ day }}</strong>
         <div class="weather-icon">
-          {% if daily.weathercode[loop.index0] == 0 %}☀️
-          {% elif daily.weathercode[loop.index0] in [1, 2, 3] %}⛅
-          {% elif daily.weathercode[loop.index0] in [45, 48] %}🌫️
-          {% elif daily.weathercode[loop.index0] in [51, 53, 55, 56, 57] %}🌧️
-          {% elif daily.weathercode[loop.index0] in [61, 63, 65] %}🌧️
-          {% elif daily.weathercode[loop.index0] in [66, 67] %}🌨️
-          {% elif daily.weathercode[loop.index0] in [71, 73, 75, 77] %}❄️
-          {% elif daily.weathercode[loop.index0] in [80, 81, 82] %}🌦️
-          {% elif daily.weathercode[loop.index0] in [85, 86] %}🌨️
-          {% elif daily.weathercode[loop.index0] in [95, 96, 99] %}⛈️
-          {% endif %}
+          <img src="{{ url_for('static', filename='icons/' + get_weather_icon(daily.weathercode[loop.index0])) }}" alt="Weather Icon">
         </div>
           <div class="temperature">
             {{ daily.temperature_2m_max[loop.index0] }}°C / {{ daily.temperature_2m_min[loop.index0] }}°C

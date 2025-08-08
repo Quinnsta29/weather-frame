@@ -53,8 +53,8 @@ header {
 }
 
 .current-weather .weather-icon { 
-  font-size: 48px;
-  margin-bottom: 10px;
+  width: 64px;
+  height: 64px;
 }
 
 .current-weather .temperature {
@@ -111,8 +111,8 @@ header {
 }
 
 .forecast-card .weather-icon {
-  font-size: 20px;
-  margin: 2px 0;
+  width: 32px;
+  height: 32px;
 }
 
 .forecast-card .temperature {
