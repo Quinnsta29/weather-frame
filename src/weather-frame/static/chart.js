@@ -5,6 +5,7 @@ function createHourlyChart(hourlyData, currentHourIndex) {
   const temperatures = hourlyData.temperature_2m.slice(currentHourIndex, endIndex);
   const rainfall = hourlyData.rain.slice(currentHourIndex, endIndex);
 
+  // Simplify data - show fewer points for cleaner display
   const timeLabels = selectedTimes.map(time => {
     const date = new Date(time);
     return date.getHours() + ':00';
@@ -19,21 +20,23 @@ function createHourlyChart(hourlyData, currentHourIndex) {
         {
           label: 'Temperatuur (°C)',
           data: temperatures,
-          borderColor: '#ff6b35',
+          borderColor: '#f37106ff', // Black for better contrast on e-ink
           backgroundColor: 'transparent',
-          borderWidth: 2,
+          borderWidth: 6, // Increased thickness for visibility
           tension: 0.2,
-          pointRadius: 0,
+          pointRadius: 0, // Add visible points
+          pointStyle: 'circle',
           yAxisID: 'y'
         },
         {
           label: 'Neerslag (mm)',
           data: rainfall,
-          borderColor: '#3498db',
+          borderColor: '#0067ddff', // Dark gray for contrast
           backgroundColor: 'transparent',
-          borderWidth: 2,
-          tension: 0.2,
-          pointRadius: 0,
+          borderWidth: 5, // Thicker line
+          tension: 0.1,
+          pointRadius: 0, // Add visible points
+          pointStyle: 'rect', // Different point shape to distinguish from temperature
           yAxisID: 'y1'
         }
       ]
@@ -42,6 +45,14 @@ function createHourlyChart(hourlyData, currentHourIndex) {
       responsive: false,
       maintainAspectRatio: false,
       animation: false,
+      layout: {
+        padding: {
+          top: 30,
+          right: 10,
+          left: 15,
+          bottom: 5
+        }
+      },
       interaction: {
         mode: 'index',
         intersect: false,
@@ -51,8 +62,13 @@ function createHourlyChart(hourlyData, currentHourIndex) {
           display: true,
           ticks: {
             callback: function(value, index, ticks){
-              return index % 4 === 0 ? this.getLabelForValue(value) : '';
-            }
+              return index % 3 === 0 ? this.getLabelForValue(value) : ''; // Show fewer x-axis labels
+            },
+            font: {
+              size: 16, // Larger font
+              weight: 'bold' // Bold for better visibility
+            },
+            color: '#000000' // Black for contrast
           },
           grid: {
             display: false,
@@ -60,23 +76,30 @@ function createHourlyChart(hourlyData, currentHourIndex) {
         },
         y: {
           type: 'linear',
-          display: false,
+          display: false, // Changed to true for better readability
           position: 'left',
           title: {
             display: true,
-            text: 'Temperature (°C)'
+            text: '°C',
+            font: {
+              size: 16,
+              weight: 'bold'
+            }
           },
           grid: {
-            drawOnChartArea: false,
+            color: '#cccccc', // Light gray grid
+            lineWidth: 1,
+            drawOnChartArea: true, // Add horizontal grid lines
           },
           ticks: {
+            font: {
+              size: 16,
+              weight: 'bold'
+            },
+            color: '#000000',
             callback: function(value, index, ticks) {
-              const min = Math.min(...temperatures);
-              const max = Math.max(...temperatures);
-              if (value === min || value === max) {
-                return String(value) + ' °C';
-              }
-              return '';
+              // Show more y-axis labels for temperature
+              return String(value) + '°';
             }
           }
         },
@@ -84,18 +107,21 @@ function createHourlyChart(hourlyData, currentHourIndex) {
           type: 'linear',
           display: true,
           position: 'right',
+          min: 0, // Force minimum to always be 0
+          suggestedMax: 2, // Suggest reasonable maximum for rainfall
           grid: {
             drawOnChartArea: false,
           },
           ticks: {
             display: true,
+            font: {
+              size: 16,
+              weight: 'bold'
+            },
+            color: '#000000',
             callback: function(value, index, ticks) {
-              const min = Math.min(...rainfall);
-              const max = Math.max(...rainfall);
-              if (value === min || value === max) {
-                return value.toFixed(1) + ' mm';
-              }
-              return '';
+              // Show all rainfall values with mm
+              return value.toFixed(1) + ' mm';
             },
           },
         },
@@ -117,16 +143,17 @@ function createHourlyChart(hourlyData, currentHourIndex) {
         const meta = chart.getDatasetMeta(0);
         
         ctx.save();
-        ctx.font = '12px Arial';
-        ctx.fillStyle = '#ff6b35';
+        ctx.font = 'bold 18px Arial'; // Larger, bolder font
+        ctx.fillStyle = '#000000'; // Black for contrast
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
 
         dataset.data.forEach((value, index) => {
-          if (index > 0 && index < dataset.data.length - 1 && index % 3 === 0) {
+          // Show temperature at key points (every 3 hours)
+          if (index % 3 === 0) {
             const point = meta.data[index];
             const x = point.x;
-            const y = point.y - 5;
+            const y = point.y - 12; // More space above point
             
             ctx.fillText(value.toFixed(1) + '°', x, y);
           }

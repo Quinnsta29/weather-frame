@@ -39,6 +39,18 @@ def dashboard():
     if not weather_data:
         weather_service.update_weather_data()
         weather_data = weather_service.get_cached_data()
+
+    # Format locale-dependent data
+    if weather_data and 'current' in weather_data:
+        current_time = weather_data['current']['time_obj']
+        weather_data['current']['formatted_date'] = current_time.strftime('%A %d %B').capitalize()
+        
+        if 'daily' in weather_data and 'time_objects' in weather_data['daily']:
+            dutch_days = []
+            for day_obj in weather_data['daily']['time_objects']:
+                day_name = day_obj.strftime('%A')[:2].upper()  # First 2 letters, uppercase
+                dutch_days.append(day_name)
+            weather_data['daily']['time'] = dutch_days
     
     return render_template("index.html", **weather_data)
 

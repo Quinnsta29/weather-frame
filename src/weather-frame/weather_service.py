@@ -37,7 +37,8 @@ class WeatherService:
         """Process and format weather data"""
         current = data['current']
         current_time = datetime.fromisoformat(current['time'])
-        current['formatted_date'] = current_time.strftime('%A %d %B').capitalize()
+        current['time_obj'] = current_time
+        # current['formatted_date'] = current_time.strftime('%A %d %B').capitalize()
         
         hourly = data['hourly']
         current_hour_index = 0
@@ -49,11 +50,15 @@ class WeatherService:
                 break
         
         daily = data['daily']
+        daily_times = []
         for i, day in enumerate(daily['time']):
             daily_time = datetime.fromisoformat(day)
-            weekday = daily_time.strftime('%A')
-            daily['time'][i] = weekday[:2]
-        
+            # weekday = daily_time.strftime('%A')
+            # daily['time'][i] = weekday[:2]
+            daily_times.append(daily_time)
+
+        daily['time_objects'] = daily_times
+
         location = self.get_location(data['latitude'], data['longitude'])
         
         return {
