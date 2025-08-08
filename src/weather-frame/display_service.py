@@ -21,7 +21,7 @@ class DisplayService:
         else:
             self.inky = None
     
-    def display_screenshot(self, filepath, saturation=0.5):
+    def display_screenshot(self, filepath, saturation=0.0):
         """Display a screenshot on the Inky Impression display.
 
         Args:
