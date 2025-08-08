@@ -26,7 +26,7 @@ class DisplayService:
 
         Args:
             filepath: Path to the screenshot file.
-            saturation: Color saturation level (default: 0.5)
+            saturation: Color saturation level (default: 0.0)
         """
         if DEBUG_MODE or not self.inky:
             print(f"Debug mode: Would display {filepath} on e-ink display")
