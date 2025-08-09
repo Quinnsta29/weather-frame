@@ -129,7 +129,12 @@ class DisplayService:
                     'chromium-browser',
                     '--headless',
                     '--disable-gpu',
-                    '--window-size=800,480',
+                    '--window-size=800,520',
+                    '--force-device-scale-factor=2',
+                    '--no-sandbox',
+                    '--disable-software-rasterizer',
+                    '--hide-scrollbars',
+                    '--virtual-time-budget=1000',
                     '--screenshot=' + self.screenshot_path,
                     url
                 ]
