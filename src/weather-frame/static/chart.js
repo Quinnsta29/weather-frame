@@ -58,7 +58,7 @@ function createHourlyChart(hourlyData, currentHourIndex) {
           top: 30,
           right: 10,
           left: 25,
-          bottom: 60
+          bottom: 45
         }
       },
       interaction: {

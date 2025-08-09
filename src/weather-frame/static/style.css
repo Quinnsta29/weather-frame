@@ -117,7 +117,7 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 120px; /* Increased from 100px */
+  min-height: 130px; /* Increased from 100px */
 }
 
 .forecast-card strong {
@@ -147,13 +147,13 @@ header {
 }
 
 .forecast-card .temperature-max {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   color: #000000;
 }
 
 .forecast-card .temperature-min {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: normal;
   color: #777777; /* Grey-ish color for min temp */
 }
