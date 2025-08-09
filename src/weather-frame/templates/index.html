@@ -35,9 +35,10 @@
         <div class="weather-icon">
           <img src="{{ url_for('static', filename='icons/' + get_weather_icon(daily.weathercode[loop.index0])) }}" alt="Weather Icon">
         </div>
-          <div class="temperature">
-            {{ daily.temperature_2m_max[loop.index0] }}°C / {{ daily.temperature_2m_min[loop.index0] }}°C
-          </div>
+        <div class="temperature">
+          <span class="temperature-max">{{ daily.temperature_2m_max[loop.index0] }}°C</span>
+          <span class="temperature-min">{{ daily.temperature_2m_min[loop.index0] }}°C</span>
+        </div>
       </div>
     {% endfor %}
   </div>

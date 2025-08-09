@@ -130,7 +130,6 @@ class DisplayService:
                     '--headless',
                     '--disable-gpu',
                     '--window-size=800,520',
-                    '--force-device-scale-factor=2',
                     '--no-sandbox',
                     '--disable-software-rasterizer',
                     '--hide-scrollbars',
