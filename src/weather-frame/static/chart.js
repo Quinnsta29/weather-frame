@@ -12,6 +12,14 @@ function createHourlyChart(hourlyData, currentHourIndex) {
   });
 
   const ctx = document.getElementById('hourlyChart').getContext('2d');
+
+  const dpr = window.devicePixelRatio || 2; // Use at least 2x for crispness
+  const canvas = ctx.canvas;
+  canvas.style.width = "100%";
+  canvas.style.height = "200px";
+  canvas.width = canvas.offsetWidth * dpr;
+  canvas.height = canvas.offsetHeight * dpr;
+  ctx.scale(dpr, dpr);
   const hourlyChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -22,7 +30,7 @@ function createHourlyChart(hourlyData, currentHourIndex) {
           data: temperatures,
           borderColor: '#f37106ff', // Black for better contrast on e-ink
           backgroundColor: 'transparent',
-          borderWidth: 6, // Increased thickness for visibility
+          borderWidth: 9, // Increased thickness for visibility
           tension: 0.2,
           pointRadius: 0, // Add visible points
           pointStyle: 'circle',
@@ -33,7 +41,7 @@ function createHourlyChart(hourlyData, currentHourIndex) {
           data: rainfall,
           borderColor: '#0067ddff', // Dark gray for contrast
           backgroundColor: 'transparent',
-          borderWidth: 5, // Thicker line
+          borderWidth: 8, // Thicker line
           tension: 0.1,
           pointRadius: 0, // Add visible points
           pointStyle: 'rect', // Different point shape to distinguish from temperature
@@ -49,8 +57,8 @@ function createHourlyChart(hourlyData, currentHourIndex) {
         padding: {
           top: 30,
           right: 10,
-          left: 15,
-          bottom: 5
+          left: 25,
+          bottom: 60
         }
       },
       interaction: {
@@ -65,10 +73,12 @@ function createHourlyChart(hourlyData, currentHourIndex) {
               return index % 3 === 0 ? this.getLabelForValue(value) : ''; // Show fewer x-axis labels
             },
             font: {
-              size: 16, // Larger font
+              size: 26, // Larger font
               weight: 'bold' // Bold for better visibility
             },
-            color: '#000000' // Black for contrast
+            color: '#000000', // Black for contrast
+            maxRotation: 0, // Force horizontal labels
+            minRotation: 0, // Ensure they don't rotate at all
           },
           grid: {
             display: false,
@@ -115,7 +125,7 @@ function createHourlyChart(hourlyData, currentHourIndex) {
           ticks: {
             display: true,
             font: {
-              size: 16,
+              size: 26,
               weight: 'bold'
             },
             color: '#000000',
@@ -143,7 +153,7 @@ function createHourlyChart(hourlyData, currentHourIndex) {
         const meta = chart.getDatasetMeta(0);
         
         ctx.save();
-        ctx.font = 'bold 18px Arial'; // Larger, bolder font
+        ctx.font = 'bold 28px Arial'; // Larger, bolder font
         ctx.fillStyle = '#000000'; // Black for contrast
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
