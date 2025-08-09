@@ -117,7 +117,7 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 130px; /* Increased from 100px */
+  min-height: 125px; /* Increased from 100px */
 }
 
 .forecast-card strong {
