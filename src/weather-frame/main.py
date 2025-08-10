@@ -7,14 +7,13 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from weather_service import WeatherService
 from display_service import DisplayService
-from utils import load_weather_icons, get_weather_icon
+from utils import get_weather_icon
 
 app = Flask(__name__)
 
 # Initialize services
 weather_service = WeatherService()
 display_service = DisplayService()
-weather_icons = load_weather_icons()
 
 def update_weather_and_display():
     """Update weather data and display"""
@@ -71,7 +70,7 @@ def add_refresh_header(response):
 
 # Register template function
 app.jinja_env.globals.update(
-    get_weather_icon=lambda code: get_weather_icon(code, weather_icons)
+    get_weather_icon=get_weather_icon
 )
 
 # Initialize the scheduler
