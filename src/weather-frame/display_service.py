@@ -116,7 +116,7 @@ class DisplayService:
                 cmd = [
                     'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
                     '--headless=new',
-                    # '--disable-gpu',
+                    '--disable-gpu',
                     '--window-size=820,520',
                     '--force-device-scale-factor=2',
                     '--no-sandbox',

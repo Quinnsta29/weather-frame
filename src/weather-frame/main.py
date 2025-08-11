@@ -58,7 +58,6 @@ def dashboard():
 def refresh():
     """Manual refresh endpoint"""
     update_weather_and_display()
-    # return "Weather data refreshed"
     logger.info("Weather data refreshed")
 
 @app.after_request
