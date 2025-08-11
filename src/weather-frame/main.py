@@ -5,13 +5,12 @@ from datetime import datetime
 from flask import Flask, render_template, request
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from weather_service import WeatherService
 from display_service import DisplayService
+from log_setup import logger
+from weather_service import WeatherService
 from utils import get_weather_icon
 
 app = Flask(__name__)
-
-#TODO: Make the logger
 
 # Initialize services
 weather_service = WeatherService()
@@ -33,7 +32,7 @@ def dashboard():
         try:
             locale.setlocale(locale.LC_TIME, 'nl_NL.UTF-8')
         except locale.Error:
-            print("Dutch locale not available, falling back to default")
+            logger.warning("Dutch locale not available, falling back to default")
     
     # Use cached data if available, otherwise fetch it
     weather_data = weather_service.get_cached_data()
@@ -59,7 +58,8 @@ def dashboard():
 def refresh():
     """Manual refresh endpoint"""
     update_weather_and_display()
-    return "Weather data refreshed"
+    # return "Weather data refreshed"
+    logger.info("Weather data refreshed")
 
 @app.after_request
 def add_refresh_header(response):

@@ -5,6 +5,8 @@ from threading import Thread
 
 from PIL import Image
 
+from log_setup import logger
+
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "0") == "1" or platform.system() == "Windows"
 
 if not DEBUG_MODE:
@@ -86,7 +88,7 @@ class DisplayService:
             saturation: Color saturation level (default: 0.0)
         """
         if DEBUG_MODE or not self.inky:
-            print(f"Debug mode: Would display {filepath} on e-ink display")
+            logger.info(f"Debug mode: Would display {filepath} on e-ink display")
             return
         
         image = Image.open(filepath)
@@ -144,11 +146,11 @@ class DisplayService:
             self.display_screenshot(self.screenshot_path)
             
             if DEBUG_MODE:
-                print(f"Debug mode: Screenshot saved to {self.screenshot_path}")
-            
+                logger.info(f"Debug mode: Screenshot saved to {self.screenshot_path}")
+
             return True
         except Exception as e:
-            print(f"Error taking screenshot: {e}")
+            logger.error(f"Error taking screenshot: {e}")
             return False
     
     def update_display_async(self):

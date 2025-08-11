@@ -3,6 +3,7 @@ from datetime import datetime
 from geopy.geocoders import Nominatim
 
 from config.api_config import API_URL, PARAMS
+from log_setup import logger
 
 class WeatherService:
     def __init__(self):
@@ -31,7 +32,7 @@ class WeatherService:
                 else:
                     return location.address.split(',')[0]
         except Exception as e:
-            print(f"Error getting location: {e}")
+            logger.error(f"Error getting location: {e}")
             return "Leiden"
     
     def process_weather_data(self, data):
@@ -39,7 +40,6 @@ class WeatherService:
         current = data['current']
         current_time = datetime.fromisoformat(current['time'])
         current['time_obj'] = current_time
-        # current['formatted_date'] = current_time.strftime('%A %d %B').capitalize()
         
         hourly = data['hourly']
         current_hour_index = 0
@@ -54,8 +54,6 @@ class WeatherService:
         daily_times = []
         for i, day in enumerate(daily['time']):
             daily_time = datetime.fromisoformat(day)
-            # weekday = daily_time.strftime('%A')
-            # daily['time'][i] = weekday[:2]
             daily_times.append(daily_time)
 
         daily['time_objects'] = daily_times
@@ -73,14 +71,14 @@ class WeatherService:
     
     def update_weather_data(self):
         """Update weather data cache"""
-        print(f"Updating weather data at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        
+        logger.info(f"Updating weather data at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+
         try:
             data = self.fetch_weather()
             self.cache = self.process_weather_data(data)
             return True
         except Exception as e:
-            print(f"Error updating weather data: {e}")
+            logger.error(f"Error updating weather data: {e}")
             return False
     
     def get_cached_data(self):
