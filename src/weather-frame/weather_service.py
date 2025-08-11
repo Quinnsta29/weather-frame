@@ -1,7 +1,8 @@
 import requests
 from datetime import datetime
 from geopy.geocoders import Nominatim
-from config import API_URL, PARAMS
+
+from config.api_config import API_URL, PARAMS
 
 class WeatherService:
     def __init__(self):

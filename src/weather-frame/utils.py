@@ -1,4 +1,4 @@
-from config import WEATHER_ICONS
+from config.icon_config import WEATHER_ICONS
 
 def get_weather_icon(weather_code):
     """Get weather icon filename for a given weather code"""

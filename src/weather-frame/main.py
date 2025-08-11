@@ -11,6 +11,8 @@ from utils import get_weather_icon
 
 app = Flask(__name__)
 
+#TODO: Make the logger
+
 # Initialize services
 weather_service = WeatherService()
 display_service = DisplayService()
