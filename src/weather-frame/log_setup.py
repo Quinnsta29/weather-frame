@@ -2,7 +2,6 @@ import json
 import logging
 import logging.config
 from pathlib import Path
-# from typing import Any, override
 from typing_extensions import override
 
 BASE_DIR = Path(__file__).resolve().parent
