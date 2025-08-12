@@ -4,11 +4,9 @@ import logging.config
 from pathlib import Path
 from typing_extensions import override
 
-BASE_DIR = Path(__file__).resolve().parent
-config_path = Path(BASE_DIR / 'config' / 'logging_config.json')
-error_logs_path = Path(BASE_DIR / 'logs' / 'error_logs')
+from weather_frame.config import CONFIG_PATH
 
-def setup_logging(logger_name: str, config_path=config_path) -> None:
+def setup_logging(logger_name: str, config_path=CONFIG_PATH) -> None:
     """Setup logging configuration and create """
     if not config_path.exists():
         raise FileNotFoundError(f"Logging configuration file not found: {config_path}")

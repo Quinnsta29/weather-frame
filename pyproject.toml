@@ -1,5 +1,5 @@
 [project]
-name = "weather-frame"
+name = "weather_frame"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -10,6 +10,7 @@ dependencies = [
     "geopy>=2.4.1",
     "logging>=0.4.9.6",
     "pillow>=11.3.0",
+    "pytest>=8.4.1",
     "requests>=2.32.4",
     "typing>=3.10.0.0",
     "typing-extensions>=4.14.1",

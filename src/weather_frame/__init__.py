@@ -1,0 +1,1 @@
+from weather_frame.log_setup import logger

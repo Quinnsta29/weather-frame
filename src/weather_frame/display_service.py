@@ -5,7 +5,7 @@ from threading import Thread
 
 from PIL import Image
 
-from log_setup import logger
+from weather_frame import logger
 
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "0") == "1" or platform.system() == "Windows"
 

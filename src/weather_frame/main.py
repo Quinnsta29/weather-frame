@@ -5,10 +5,10 @@ from datetime import datetime
 from flask import Flask, render_template, request
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from display_service import DisplayService
-from log_setup import logger
-from weather_service import WeatherService
-from utils import get_weather_icon
+from weather_frame import logger
+from weather_frame.display_service import DisplayService
+from weather_frame.weather_service import WeatherService
+from weather_frame.utils import get_weather_icon
 
 app = Flask(__name__)
 
@@ -82,4 +82,4 @@ atexit.register(lambda: scheduler.shutdown())
 
 if __name__ == "__main__":
     update_weather_and_display()  # Initial data fetch
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=False)
