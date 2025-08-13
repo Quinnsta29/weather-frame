@@ -11,6 +11,4 @@ dependencies = [
     "pillow>=11.3.0",
     "pytest>=8.4.1",
     "requests>=2.32.4",
-    "typing>=3.10.0.0",
-    "typing-extensions>=4.14.1",
 ]
