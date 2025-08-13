@@ -134,6 +134,8 @@ class DisplayService:
                     '--window-size=800,520',
                     '--no-sandbox',
                     '--disable-software-rasterizer',
+                    "--disable-dev-shm-usage",
+                    "--disable-features=UseDBus",
                     '--hide-scrollbars',
                     '--virtual-time-budget=1000',
                     '--screenshot=' + self.screenshot_path,
