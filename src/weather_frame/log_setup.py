@@ -1,8 +1,6 @@
 import json
 import logging
 import logging.config
-from pathlib import Path
-from typing_extensions import override
 
 from weather_frame.config import CONFIG_PATH
 
